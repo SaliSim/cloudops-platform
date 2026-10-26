@@ -3,12 +3,12 @@ const app = require("../src/server");
 
 
 describe("CloudOps Platform API", () => {
-    test("GET / returns information", async () => {
+    test("GET /returns information", async () => {
         const response = await request(app).get("/");
 
-        expectCookies(response.statusCode).toBe(200);
-        expectCookies(response.body.name).toBe("CloudOps Platform");
-        expectCookies(response.body.version).toBeDefined();
+        expect(response.statusCode).toBe(200);
+        expect(response.body.name).toBe("CloudOps Platform");
+        expect(response.body.version).toBeDefined();
     });
 
     test("GET /health returns healthy status", async () => {
