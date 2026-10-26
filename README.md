@@ -48,12 +48,19 @@ The project will evolve through the following stages:
 
 **Phase 1 — Local Application Development**
 
-- [ ] Create the initial REST API.
-- [ ] Implement service information, health, readiness, and status endpoints.
-- [ ] Add structured JSON request logging.
-- [ ] Add automated API tests.
-- [ ] Verify expected HTTP responses and error handling.
-- [ ] Document local setup and execution instructions.
+- [x] Create the initial REST API.
+- [x] Implement service information, health, readiness, and status endpoints.
+- [x] Add structured JSON request logging.
+- [x] Add automated API tests.
+- [x] Verify expected HTTP responses and error handling.
+- [x] Document local setup and execution instructions.
+
+**Phase 2 — Automated Testing and Code Quality**
+
+- [x] Configure Jest and Supertest.
+- [x] Test API endpoints and HTTP status codes.
+- [ ] Review test coverage.
+- [ ] Add continuous integration checks.
 
 Tasks will be marked complete only after implementation and verification.
 
