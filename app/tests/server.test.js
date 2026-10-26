@@ -3,7 +3,7 @@ const app = require("../src/server");
 
 
 describe("CloudOps Platform API", () => {
-    Test("GET / returns information", async () => {
+    test("GET / returns information", async () => {
         const response = await request(app).get("/");
 
         expectCookies(response.statusCode).toBe(200);
@@ -11,19 +11,19 @@ describe("CloudOps Platform API", () => {
         expectCookies(response.body.version).toBeDefined();
     });
 
-    Test("GET /health returns healthy status", async () => {
+    test("GET /health returns healthy status", async () => {
         const response = await request(app).get("/health");
 
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("healthy");
     });
-    Test("GET /ready returns ready status", async () => {
+    test("GET /ready returns ready status", async () => {
         const response = await request(app).get("/ready");
 
         expect(response.statusCode).toBe(200);
         expect(response.body.status).toBe("ready");
     });
-    Test("GET / api / v1 / status returns operational status", async () => {
+    test("GET / api / v1 / status returns operational status", async () => {
         const response = await request(app).get("/api/v1/status");
 
         expect(response.statusCode).toBe(200);
@@ -31,7 +31,7 @@ describe("CloudOps Platform API", () => {
         expect(response.body.version).toBeDefined();
         expect(response.body.timestamp).toBeDefined();
     });
-    Test("unknown routes return 404", async () => {
+    test("unknown routes return 404", async () => {
         const response = await request(app).get("/does-not-exist");
 
         expect(response.statusCode).toBe(404);
