@@ -154,9 +154,20 @@ Cloud resources will be introduced only when the local application and testing s
 
 ## Challenges and Lessons Learned
 
-This section will document real implementation challenges, their root causes, the solutions applied, and lessons learned during development.
+Challenge: An API test failed because VS Code autocomplete inserted expectCookies() instead of Jest's expect() function.
 
-No challenges or results will be recorded here until they have actually occurred.
+Root cause: An incorrect function was selected during code completion, resulting in an invalid test assertion.
+
+Resolution:
+
+Inspected the failing test and identified the incorrect function.
+
+Replaced expectCookies() with expect().
+
+Reran the test suite to verify that the tests passed.
+
+Lesson learned: IDE autocomplete can introduce unintended errors. Reviewing generated code and reading test failure messages carefully helps identify issues quickly.
+
 
 ## Project Roadmap
 
