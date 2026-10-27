@@ -1,0 +1,22 @@
+
+# Dependencies installed on the host
+node_modules/
+
+# Git history and local metadata
+.git/
+
+# Test output
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Operating system files
+.DS_Store
+Thumbs.db
