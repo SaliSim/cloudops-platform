@@ -57,10 +57,9 @@ The project will evolve through the following stages:
 
 **Phase 2 — Automated Testing and Code Quality**
 
-- [x] Configure Jest and Supertest.
-- [x] Test API endpoints and HTTP status codes.
-- [ ] Review test coverage.
-- [ ] Add continuous integration checks.
+- [x] Add GitHub Actions CI workflow.
+- [x] Verify automated tests run successfully in CI.
+- [x] Verify the Docker image builds successfully in CI.
 
 **Phase 3 — Docker Containerization**
 
@@ -74,7 +73,7 @@ The project will evolve through the following stages:
 
 Tasks will be marked complete only after implementation and verification.
 
-Tasks will be marked complete only after implementation and verification.
+
 
 ## Getting Started
 
@@ -185,6 +184,25 @@ The project will progressively introduce:
 - Error-handling tests.
 - Deployment verification and operational checks.
 
+## Continuous Integration
+
+This project uses GitHub Actions to automate testing and Docker image builds.
+
+### Workflow Triggers
+
+- Pushes to the `main` branch.
+- Pull requests targeting the `main` branch.
+
+### Pipeline Steps
+
+1. Checks out the repository.
+2. Sets up Node.js 22 with npm caching.
+3. Installs dependencies using `npm ci`.
+4. Runs automated tests using Jest.
+5. Builds the Docker image to validate containerization.
+
+The workflow has been executed successfully on GitHub Actions, confirming that automated tests pass and the Docker image builds successfully in the CI environment.
+
 ## Security and Cost Management
 
 Planned controls include:
@@ -238,13 +256,14 @@ Executed the health-check command inside the container and confirmed that the re
 
 Inspected the Docker health-check configuration and discovered that the URL omitted port `8080`.
 
-Updated the health-check URL to `http://127.0.0.1:8080/health\`.
+Updated the health-check URL to `http://127.0.0.1:8080/health`.
 
 Rebuilt the Docker image, recreated the container, and verified its health status.
 
 **Outcome:** The container health status changed to `healthy`, confirming that Docker could successfully reach the application's health endpoint.
 
 **Lesson learned:** Small configuration errors, such as omitting a port number, can cause misleading health-check failures. Comparing a failing configuration with a successful manual test helps identify the root cause efficiently.
+
 
 
 ## Project Roadmap
@@ -255,11 +274,11 @@ Rebuilt the Docker image, recreated the container, and verified its health statu
 - [ ] Phase 4: Google Cloud setup and cost controls
 - [ ] Phase 5: Terraform infrastructure
 - [ ] Phase 6: Cloud Run deployment
-- [ ] Phase 7: GitHub Actions CI/CD
-- [ ] Phase 8: Logging, monitoring, and alerting
-- [ ] Phase 9: Incident simulation, troubleshooting, and rollback
-- [ ] Phase 10: Final documentation and architecture review
-
+- [x] Phase 7: GitHub Actions continuous integration (CI)
+- [ ] Phase 8: Automated deployment (CD)
+- [ ] Phase 9: Logging, monitoring, and alerting
+- [ ] Phase 10: Incident simulation, troubleshooting, and rollback
+- [ ] Phase 11: Final documentation and architecture review
 ## License
 
 A license will be selected and added when appropriate.
