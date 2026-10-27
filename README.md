@@ -228,6 +228,24 @@ Lesson learned: IDE autocomplete can introduce unintended errors. Reviewing gene
 
 **Lesson learned:** A successful image build alone does not prove that an application works correctly at runtime. Testing the running container verifies application behavior and response handling.
 
+**Challenge:** Docker marked the container as unhealthy even though the API was responding successfully.
+
+**Investigation and resolution:**
+
+Checked the `/health` endpoint using `curl -i` and confirmed it returned HTTP `200 OK`.
+
+Executed the health-check command inside the container and confirmed that the request succeeded when using port `8080`.
+
+Inspected the Docker health-check configuration and discovered that the URL omitted port `8080`.
+
+Updated the health-check URL to `http://127.0.0.1:8080/health\`.
+
+Rebuilt the Docker image, recreated the container, and verified its health status.
+
+**Outcome:** The container health status changed to `healthy`, confirming that Docker could successfully reach the application's health endpoint.
+
+**Lesson learned:** Small configuration errors, such as omitting a port number, can cause misleading health-check failures. Comparing a failing configuration with a successful manual test helps identify the root cause efficiently.
+
 
 ## Project Roadmap
 
