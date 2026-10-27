@@ -62,6 +62,18 @@ The project will evolve through the following stages:
 - [ ] Review test coverage.
 - [ ] Add continuous integration checks.
 
+**Phase 3 — Docker Containerization**
+
+- [x] Create a multi-stage Dockerfile using Node.js 22 Alpine.
+- [x] Install production dependencies in the image.
+- [x] Run the application as a non-root user.
+- [x] Add a `.dockerignore` file.
+- [x] Build the Docker image successfully.
+- [x] Run the container and verify API endpoints.
+- [x] Verify HTTP 200 responses from the main endpoints and HTTP 404 for unknown routes.
+
+Tasks will be marked complete only after implementation and verification.
+
 Tasks will be marked complete only after implementation and verification.
 
 ## Getting Started
@@ -115,6 +127,37 @@ curl -i http://localhost:8080/health
 curl -i http://localhost:8080/ready
 curl -i http://localhost:8080/api/v1/status
 ```
+### Run with Docker
+
+Build the Docker image from the repository root:
+
+```bash
+docker build -t cloudops-platform:local .
+```
+
+Start the container:
+
+```bash
+docker run --rm --name cloudops-platform -p 8080:8080 cloudops-platform:local
+```
+
+In a second terminal, verify the endpoints:
+
+```bash
+curl -i http://localhost:8080/
+curl -i http://localhost:8080/health
+curl -i http://localhost:8080/ready
+curl -i http://localhost:8080/api/v1/status
+curl -i http://localhost:8080/does-not-exist
+```
+
+Expected responses:
+
+- The home, health, readiness, and status endpoints return HTTP `200`.
+- Unknown routes return HTTP `404`.
+- Responses include an `x-request-id` header.
+
+Stop the container with `Ctrl+C`. Because the container was started with `--rm`, Docker automatically removes it when it stops.
 
 ## Engineering Decisions
 
@@ -126,6 +169,9 @@ This section records the reasoning behind implementation choices.
 - **Separate health and readiness endpoints:** Establishes a foundation for deployment health checks.
 - **Automated testing:** Helps detect regressions before changes are deployed.
 - **Infrastructure as Code:** Makes infrastructure repeatable, reviewable, and version-controlled.
+
+- **Multi-stage Docker build:** Separates dependency installation from the final runtime image, allowing the runtime image to contain only the files needed to run the application.
+- **Non-root container execution:** Runs the application as the unprivileged `node` user to reduce the potential impact of a compromised application.
 
 These decisions will be refined as the project evolves.
 
@@ -168,12 +214,26 @@ Reran the test suite to verify that the tests passed.
 
 Lesson learned: IDE autocomplete can introduce unintended errors. Reviewing generated code and reading test failure messages carefully helps identify issues quickly.
 
+### Docker Image Build and Runtime Verification
+
+**Challenge:** Verify that the API works when packaged and run as a Docker container.
+
+**Investigation and resolution:**
+- Built the image using the multi-stage Dockerfile.
+- Started the container with port `8080` mapped to the host.
+- Used `curl -i` to inspect HTTP response headers, status codes, and JSON response bodies.
+- Verified successful responses from the main API endpoints and a `404` response for an unknown route.
+
+**Outcome:** The Docker image built successfully, and all five endpoint checks returned their expected HTTP status codes.
+
+**Lesson learned:** A successful image build alone does not prove that an application works correctly at runtime. Testing the running container verifies application behavior and response handling.
+
 
 ## Project Roadmap
 
-- [ ] Phase 1: Local application development
+- [x] Phase 1: Local application development
 - [ ] Phase 2: Automated testing and code quality
-- [ ] Phase 3: Docker containerization
+- [x] Phase 3: Docker containerization
 - [ ] Phase 4: Google Cloud setup and cost controls
 - [ ] Phase 5: Terraform infrastructure
 - [ ] Phase 6: Cloud Run deployment
