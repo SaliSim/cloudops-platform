@@ -40,11 +40,18 @@ resource "google_storage_bucket" "portfolio" {
 }
 
 resource "google_storage_bucket" "access_logs" {
+
+  # checkov:skip=CKV_GCP_62:This bucket is the access-log destination; logging it would require additional infrastructure and cost.
+
   name                        = "${var.project_id}-cloudops-access-logs"
   location                    = var.region
   uniform_bucket_level_access = true
   public_access_prevention    = "enforced"
   force_destroy               = false
+
+  versioning {
+    enabled = true
+  }
 
   labels = {
     project     = "cloudops-platform"
