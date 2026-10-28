@@ -25,6 +25,11 @@ resource "google_storage_bucket" "portfolio" {
     enabled = true
   }
 
+  logging {
+    log_bucket        = google_storage_bucket.access_logs.name
+    log_object_prefix = "portfolio-access/"
+  }
+
   force_destroy = false
 
   labels = {
@@ -32,4 +37,24 @@ resource "google_storage_bucket" "portfolio" {
     environment = "portfolio"
     managed_by  = "terraform"
   }
+}
+
+resource "google_storage_bucket" "access_logs" {
+  name                        = "${var.project_id}-cloudops-access-logs"
+  location                    = var.region
+  uniform_bucket_level_access = true
+  public_access_prevention    = "enforced"
+  force_destroy               = false
+
+  labels = {
+    project     = "cloudops-platform"
+    environment = "portfolio"
+    managed_by  = "terraform"
+  }
+}
+
+resource "google_storage_bucket_iam_member" "access_logs_writer" {
+  bucket = google_storage_bucket.access_logs.name
+  role   = "roles/storage.objectCreator"
+  member = "group:cloud-storage-analytics@google.com"
 }
