@@ -54,3 +54,22 @@ jobs:
 
       - name: Validate Terraform configuration
         run: terraform validate
+
+  checkov-security:
+    name: Checkov Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Checkov
+        run: python -m pip install checkov==3.3.30
+
+      - name: Scan Terraform configuration
+        run: checkov -d terraform/ --framework terraform
