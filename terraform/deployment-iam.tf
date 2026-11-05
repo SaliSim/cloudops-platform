@@ -7,11 +7,13 @@ resource "google_artifact_registry_repository_iam_member" "github_writer" {
   member     = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
-# Allow GitHub Actions to deploy and manage Cloud Run services
-resource "google_project_iam_member" "github_cloud_run_admin" {
-  project = var.project_id
-  role    = "roles/run.admin"
-  member  = "serviceAccount:${google_service_account.github_actions.email}"
+# Allow GitHub Actions to deploy to the specific Cloud Run service
+resource "google_cloud_run_v2_service_iam_member" "github_cloud_run_developer" {
+  project  = var.project_id
+  location = google_cloud_run_v2_service.cloudops.location
+  name     = google_cloud_run_v2_service.cloudops.name
+  role     = "roles/run.developer"
+  member   = "serviceAccount:${google_service_account.github_actions.email}"
 }
 
 # Allow GitHub Actions to act as the Cloud Run runtime service account
