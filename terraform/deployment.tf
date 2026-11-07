@@ -61,12 +61,12 @@ resource "google_cloud_run_v2_service" "cloudops" {
         name  = "NODE_ENV"
         value = "production"
       }
-
-      env {
-        name  = "PORT"
-        value = "8080"
-      }
     }
+  }
+  lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image
+    ]
   }
 }
 
