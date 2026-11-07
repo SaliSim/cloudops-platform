@@ -93,7 +93,28 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Debug GitHub OIDC claims
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const token = await core.getIDToken(
+              '//iam.googleapis.com/projects/486200743839/locations/global/workloadIdentityPools/cloudops-github-pool/providers/github-provider'
+            );
 
+            const claims = JSON.parse(
+              Buffer.from(token.split('.')[1], 'base64url').toString()
+            );
+
+            for (const key of [
+              'sub',
+              'repository',
+              'ref',
+              'aud',
+              'repository_owner',
+              'event_name'
+            ]) {
+              core.info(`${key}: ${claims[key] ?? 'NOT PRESENT'}`);
+            }
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v3
         with:
